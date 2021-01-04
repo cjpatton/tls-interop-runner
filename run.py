@@ -1,9 +1,21 @@
 #!/usr/bin/env python3
-
 import argparse
 
-from testcases import TESTCASES
-from implementations import CLIENTS, SERVERS
+TESTCASES = [
+    # The client indicates support for delegated credentials and the server
+    # signs the handshake with a delegated credential.
+    "dc",
+]}
+
+CLIENTS = [
+    "cloudflare-go",
+]
+
+SERVERS = [
+    "boringssl",
+    "cloudflare-go",
+    "rustls",
+]
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -11,20 +23,22 @@ def get_args():
         "-s",
         "--server",
         help="server implementation. Valid implementations are: "
-              + ", ".join(x.name() for x in SERVERS),
+              + ", ".join(SERVERS),
     )
     parser.add_argument(
         "-c",
         "--client",
         help="client implementation. Valid implementations are: "
-              + ", ".join(x.name() for x in CLIENTS),
+              + ", ".join(CLIENTS),
     )
     parser.add_argument(
         "-t",
         "--test",
         help="test case. Valid test cases are: "
-             + ", ".join([x.name() for x in TESTCASES]),
+             + ", ".join(TESTCASES.keys()),
     )
     return parser.parse_args()
 
-print(get_args())
+
+if __name__ == "__main__":
+    print(get_args())
